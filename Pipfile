@@ -1,0 +1,18 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+flake8 = "*"
+autopep8 = "*"
+importlib-metadata = "==1.7.0"
+
+[packages]
+google-cloud-core = "*"
+flask = "*"
+google-cloud-datastore = "*"
+isort = "*"
+
+[requires]
+python_version = "3.7"
