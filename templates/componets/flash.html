@@ -34,6 +34,24 @@
         {{ flashMessage }}
     </div>
 </div>
+{% elif category == 'success' %}
+<div class="my-4 alert alert-success d-flex align-items-center" role="alert">
+    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:">
+        <use xlink:href="#check-circle-fill" />
+    </svg>
+    <div>
+        {{ flashMessage }}
+    </div>
+</div>
+{% elif category == 'warning' %}
+<div class="my-4 alert alert-warning d-flex align-items-center" role="alert">
+    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Warning:">
+        <use xlink:href="#exclamation-triangle-fill" />
+    </svg>
+    <div>
+        {{ flashMessage }}
+    </div>
+</div>
 {% endif %}
 {% endfor %}
 {% endif %}
