@@ -9,32 +9,14 @@
     <link rel="shortcut icon" href="favicon.ico">
 
     <title>{{ title }}</title>
-    </hea>
+</head>
 
 <body>
     <div class="container">
         <a class="fs-1 text-decoration-none" href="/">Attendance Management</a>
-        <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-            <div class="container-fluid">
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                    aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <li class="navbar-nav">
-                            <a class="nav-link active" aria-current="page" href="/home/">Home</a>
-                        </li>
-                    </ul>
-                    {% if login_flag %}
-                    <form class="d-flex" action="{{ url_for('logout.post_logout') }}" method="POST">
-                        <button class="btn btn-primary" type="submit">Logout</button>
-                    </form>
-                    {% endif %}
-                </div>
-            </div>
-        </nav>
+        {% include "componets/nav.html" %}
+        {% include "componets/flash.html" %}
+
         {% block body %}
         {% endblock %}
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"

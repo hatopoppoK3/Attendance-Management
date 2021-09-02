@@ -2,7 +2,7 @@ import functools
 import secrets
 
 from flask import (Blueprint, g, redirect, render_template, request, session,
-                   url_for)
+                   url_for, flash)
 from werkzeug.security import check_password_hash
 
 from datastore.datastore import get_entity
@@ -18,6 +18,7 @@ def load_logged_in_user():
         g.login_flag = False
     else:
         g.login_flag = True
+        g.username = session.get('username')
 
 
 def login_required(view):
@@ -36,7 +37,8 @@ def show_login():
     if g.login_flag:
         return redirect(url_for('home.show_home'))
     return render_template('login.html',
-                           title='Login', login_flag=g.login_flag)
+                           title='Login',
+                           login_flag=g.login_flag)
 
 
 @login.route('/', methods=['POST'])
@@ -46,7 +48,10 @@ def post_login():
 
     user = get_entity('user', username)
     if (user is None) or not(check_password_hash(user['password'], password)):
+        flash('Login Failed!', category='alert')
         return redirect(url_for('login.show_login'))
     else:
         session['session_id'] = secrets.token_bytes(256)
+        session['username'] = username
+        flash('Now Login!', category='info')
         return redirect(url_for('home.show_home'))

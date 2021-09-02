@@ -22,6 +22,7 @@ flaskでアプリケーションを作るときはHTMLと埋め込み変数の�
    * ローカル変数 : Snake case
    * グローバル変数 : Screaming snake case
    * クラス名 : Upper camel case
+   * 埋め込み変数 : Lower camel case
 2. Javascriptファイル
    * 関数名 : Lower camel case
    * ローカル変数 : Lower camel case
