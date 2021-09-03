@@ -28,7 +28,7 @@ def post_register():
 
     update_entity('user', username, {
         'password': generate_password_hash(password)})
-    session['session_id'] = secrets.token_bytes(256)
+    session['session_id'] = secrets.token_hex(64)
     session['username'] = username
     flash('Create new user and Login!', category='info')
     return redirect(url_for('home.show_home'))

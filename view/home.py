@@ -1,6 +1,6 @@
 import datetime
 
-from flask import Blueprint, g, redirect, render_template, request, url_for
+from flask import Blueprint, redirect, render_template, request, url_for
 
 from datastore.datastore import get_entity, update_entity
 from account.view.login import login_required
@@ -29,8 +29,7 @@ def show_home():
             end_time = datetime.datetime.strftime(
                 time_entity['endTime'], '%H:%M:%S')
 
-    return render_template('index.html',
-                           title='home',
+    return render_template('index.html', title='home',
                            startTime=start_time, endTime=end_time)
 
 

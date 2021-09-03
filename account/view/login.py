@@ -43,7 +43,7 @@ def post_login():
         flash('Login Failed!', category='alert')
         return redirect(url_for('account_app.login.show_login'))
 
-    session['session_id'] = secrets.token_bytes(256)
+    session['session_id'] = secrets.token_hex(64)
     session['username'] = username
     flash('Now Login!', category='info')
     return redirect(url_for('home.show_home'))
