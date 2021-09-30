@@ -1,1 +1,4 @@
 runtime: python37
+automatic_scaling:
+  max_idle_instances: 1
+  min_pending_latency: 2000ms

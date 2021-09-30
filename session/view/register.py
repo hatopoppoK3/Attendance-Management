@@ -20,11 +20,11 @@ def post_register():
     password_confirm = request.form['passwordConfirm']
     if password != password_confirm:
         flash('Password is incorrect!', category='alert')
-        return redirect(url_for('account_app.register.show_register'))
+        return redirect(url_for('session.register.show_register'))
 
     elif not(get_entity('user', username) is None):
         flash('This user already exist!', category='alert')
-        return redirect(url_for('account_app.register.show_register'))
+        return redirect(url_for('session.register.show_register'))
 
     update_entity('user', username, {
         'password': generate_password_hash(password)})

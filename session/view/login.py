@@ -21,7 +21,8 @@ def login_required(view):
         if g.session_id:
             return view(**kwargs)
 
-        return redirect(url_for('account_app.login.show_login'))
+        flash('Session Timeout!', category='alert')
+        return redirect(url_for('session.login.show_login'))
 
     return wrapped_view
 
@@ -40,8 +41,8 @@ def post_login():
 
     user = get_entity('user', username)
     if (user is None) or not(check_password_hash(user['password'], password)):
-        flash('Login Failed!', category='alert')
-        return redirect(url_for('account_app.login.show_login'))
+        flash('Username or Password is incorrect!', category='alert')
+        return redirect(url_for('session.login.show_login'))
 
     session['session_id'] = secrets.token_hex(64)
     session['username'] = username

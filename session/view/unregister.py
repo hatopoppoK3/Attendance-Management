@@ -3,7 +3,7 @@ from flask import (Blueprint, flash, redirect, render_template, request,
                    session, url_for)
 from werkzeug.security import check_password_hash
 
-from account.view.login import login_required
+from session.view.login import login_required
 
 
 unregister = Blueprint('unregister', __name__, url_prefix='/unregister')
@@ -21,7 +21,7 @@ def post_unregister():
     if request.form['sessionID'] != session['session_id']:
         session.clear()
         flash('Session Error! Force Logout!', 'alert')
-        return redirect(url_for('account_app.login.show_login'))
+        return redirect(url_for('session.login.show_login'))
 
     username = request.form['username']
     password = request.form['password']
@@ -29,13 +29,13 @@ def post_unregister():
     user = get_entity('user', username)
     if user is None:
         flash('Unregister Failed!', category='alert')
-        return redirect(url_for('account_app.unregister.show_unregister'))
+        return redirect(url_for('session.unregister.show_unregister'))
 
     elif not(check_password_hash(user['password'], password)):
-        flash('Password Wrong!', category='alert')
-        return redirect(url_for('account_app.unregister.show_unregister'))
+        flash('Password is incorrect!', category='alert')
+        return redirect(url_for('session.unregister.show_unregister'))
 
     delete_entity('user', username)
     session.clear()
     flash('Unregister Success!', category='success')
-    return redirect(url_for('account_app.login.show_login'))
+    return redirect(url_for('session.login.show_login'))

@@ -3,7 +3,7 @@ import datetime
 from flask import Blueprint, redirect, render_template, request, url_for
 
 from datastore.datastore import get_entity, update_entity
-from account.view.login import login_required
+from session.view.login import login_required
 
 home = Blueprint('home', __name__, url_prefix='/home')
 
