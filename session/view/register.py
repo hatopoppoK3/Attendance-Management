@@ -1,34 +1,27 @@
-import secrets
-
-from datastore.datastore import get_entity, update_entity
-from flask import (Blueprint, flash, redirect, render_template, request,
+from flask import (Blueprint, flash, g, redirect, render_template, request,
                    session, url_for)
-from werkzeug.security import generate_password_hash
+
+from models.user import User
 
 register = Blueprint('register', __name__, url_prefix='/register')
 
 
 @register.route('/', methods=['GET'])
 def show_register():
+    if g.session:
+        return redirect(url_for('home.show_home'))
     return render_template('account/register.html', title='Register')
 
 
 @register.route('/', methods=['POST'])
 def post_register():
-    username = request.form['username']
-    password = request.form['password']
-    password_confirm = request.form['passwordConfirm']
-    if password != password_confirm:
-        flash('Password is incorrect!', category='alert')
-        return redirect(url_for('session.register.show_register'))
+    user = User(request.form['username'])
+    if user.create_user(request.form['password'],
+                        request.form['passwordConfirm']):
+        session['username'] = user.username
+        session['session_id'] = user.userdata['session_id']
+        flash('アカウント作成', category='info')
+        return redirect(url_for('home.show_home'))
 
-    elif not(get_entity('user', username) is None):
-        flash('This user already exist!', category='alert')
-        return redirect(url_for('session.register.show_register'))
-
-    update_entity('user', username, {
-        'password': generate_password_hash(password)})
-    session['session_id'] = secrets.token_hex(64)
-    session['username'] = username
-    flash('Create new user and Login!', category='info')
-    return redirect(url_for('home.show_home'))
+    flash('アカウント作成失敗', category='alert')
+    return redirect(url_for('session.register.show_register'))

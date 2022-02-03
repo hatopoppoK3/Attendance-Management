@@ -1,27 +1,33 @@
 import functools
-import secrets
 
-from datastore.datastore import get_entity
 from flask import (Blueprint, flash, g, redirect, render_template, request,
                    session, url_for)
-from werkzeug.security import check_password_hash
+
+from models.user import User
 
 login = Blueprint('login', __name__, url_prefix='/')
 
 
 @login.before_app_request
 def load_logged_in_user():
-    g.session_id = session.get('session_id')
-    g.username = session.get('username')
+    if not(session.get('username')):
+        g.session = False
+        return
+
+    user = User(session.get('username'))
+    if user.auth_session(session.get('session_id')):
+        g.session = True
+        g.user = user.__dict__
+    else:
+        g.session = False
 
 
-def login_required(view):
-    @functools.wraps(view)
+def login_required(func):
+    @functools.wraps(func)
     def wrapped_view(**kwargs):
-        if g.session_id:
-            return view(**kwargs)
+        if g.session:
+            return func(**kwargs)
 
-        flash('Session Timeout!', category='alert')
         return redirect(url_for('session.login.show_login'))
 
     return wrapped_view
@@ -29,22 +35,20 @@ def login_required(view):
 
 @login.route('/', methods=['GET'])
 def show_login():
-    if g.session_id:
+    if g.session:
         return redirect(url_for('home.show_home'))
     return render_template('account/login.html', title='Login')
 
 
 @login.route('/', methods=['POST'])
 def post_login():
-    username = request.form['username']
-    password = request.form['password']
+    user = User(request.form['username'])
+    if user.create_session(request.form['password']):
+        session['username'] = user.username
+        session['session_id'] = user.userdata['session_id']
+        flash('ログイン', category='info')
+        return redirect(url_for('home.show_home'))
 
-    user = get_entity('user', username)
-    if (user is None) or not(check_password_hash(user['password'], password)):
-        flash('Username or Password is incorrect!', category='alert')
-        return redirect(url_for('session.login.show_login'))
-
-    session['session_id'] = secrets.token_hex(64)
-    session['username'] = username
-    flash('Now Login!', category='info')
-    return redirect(url_for('home.show_home'))
+    session.clear()
+    flash('ログイン失敗', category='alert')
+    return redirect(url_for('session.login.show_login'))

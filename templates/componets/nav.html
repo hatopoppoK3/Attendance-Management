@@ -9,7 +9,7 @@
                 <li class="navbar-nav m-1">
                     <a class="btn btn-primary" aria-current="page" href="/home/">Home</a>
                 </li>
-                {% if g.session_id %}
+                {% if g.user %}
                 <form class="navbar-nav m-1" action="{{ url_for('session.logout.post_logout') }}" method="POST">
                     <button class="btn btn-primary" type="submit">Logout</button>
                 </form>

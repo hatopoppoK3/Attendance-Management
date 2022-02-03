@@ -3,8 +3,7 @@ Documention
     https://googleapis.dev/python/datastore/latest/index.html
 """
 from google.cloud import datastore
-from google.cloud.datastore import Query, Entity
-
+from google.cloud.datastore import Entity, Query
 
 datastore_client = datastore.Client()
 

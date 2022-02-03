@@ -5,23 +5,21 @@
 
 <form class="alert alert-danger py-4" role="alert" action="{{ url_for('session.unregister.post_unregister') }}"
     method="POST">
-    <h4 class="alert-danger">Account Unregister</h4>
-    <h5 class="alert-danger">username : {{ g.username }}</h5>
+    <h4 class="alert-danger">アカウント削除</h4>
+    <h5 class="alert-danger">username : {{ g.user['username'] }}</h5>
     <hr>
     <label for="passwordForm" class="form-label fs-5">Password</label>
-    <input type="hidden" name="username" value="{{ g.username }}" required>
-    <input type="hidden" name="sessionID" value="{{ g.session_id }}" required>
     <input type="password" name="password" class="form-control" id="passwordForm" required>
     <hr>
-    <p>This operation cannot be canceled.
+    <p>削除したアカウントは復旧できません
     <div class="form-check">
         <input class="form-check-input" type="checkbox" id="unregisterConfirmed" required>
         <label class="form-check-label" for="unregisterConfirmed">
-            Confirmed
+            確認
         </label>
     </div>
     </p>
     <hr>
-    <button type="submit" class="btn btn-danger">Unregister</button>
+    <button type="submit" class="btn btn-danger">削除</button>
 </form>
 {% endblock %}
