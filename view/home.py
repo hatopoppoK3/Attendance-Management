@@ -2,8 +2,8 @@ import datetime
 
 from flask import Blueprint, redirect, render_template, request, url_for
 
-from datastore.datastore import get_entity, update_entity
 from session.view.login import login_required
+from utility.datastore import get_entity, update_entity
 
 home = Blueprint('home', __name__, url_prefix='/home')
 

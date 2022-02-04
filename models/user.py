@@ -2,8 +2,10 @@ import secrets
 
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from datastore.datastore import delete_entity, get_entity, update_entity
+from config import SESSION_LIFETIME, SESSION_LOG_COUNT
+from utility.datastore import delete_entity, get_entity, update_entity
 from utility.datetime import get_nowdatetime, get_subdatetime
+from utility.list import rotate_list_element
 
 
 class User(object):
@@ -45,7 +47,7 @@ class User(object):
             self.userdata = userdata
 
     def auth_session(self, session_id: str) -> bool:
-        """sessionIDの有効性(15分)を検証する.
+        """sessionIDの有効性を検証する.
 
         Parameters
         ----------
@@ -61,7 +63,7 @@ class User(object):
         sub_datetime = get_subdatetime(
             now_datetime, self.userdata['login_time'][-1])
         if not(self.userdata['session_id'] == session_id) or \
-                not(sub_datetime < 900):
+                not(sub_datetime < SESSION_LIFETIME):
             return False
 
         return True
@@ -88,8 +90,10 @@ class User(object):
 
         self.userdata = {}
         self.userdata['passhash'] = generate_password_hash(password)
-        self.userdata['create_time'] = get_nowdatetime()
-        self.userdata['login_time'] = [get_nowdatetime()]
+        now_datetime = get_nowdatetime()
+        self.userdata['create_time'] = now_datetime
+        self.userdata['login_time'] = rotate_list_element(now_datetime)
+        self.userdata['logout_time'] = []
         self.userdata['session_id'] = secrets.token_hex(64)
 
         update_entity(self.TABLE_NAME, self.username, self.userdata)
@@ -113,10 +117,8 @@ class User(object):
                 (check_password_hash(self.userdata['passhash'], password))):
             return False
 
-        if len(self.userdata['login_time']) == 0:
-            self.userdata['login_time'] = [get_nowdatetime()]
-        else:
-            self.userdata['login_time'].append(get_nowdatetime())
+        self.userdata['login_time'] = rotate_list_element(
+            get_nowdatetime(), self.userdata['login_time'], SESSION_LOG_COUNT)
         self.userdata['session_id'] = secrets.token_hex(64)
         update_entity(self.TABLE_NAME, self.username, self.userdata)
 
@@ -146,22 +148,9 @@ class User(object):
             return False
 
         self.userdata['session_id'] = None
-        if not('logout_time' in self.userdata.keys()) or \
-                (len(self.userdata['logout_time']) == 0):
-            self.userdata['logout_time'] = [get_nowdatetime()]
-        else:
-            self.userdata['logout_time'].append(get_nowdatetime())
+        self.userdata['logout_time'] = rotate_list_element(
+            get_nowdatetime(), self.userdata['logout_time'], SESSION_LOG_COUNT)
 
         update_entity(self.TABLE_NAME, self.username, self.userdata)
 
         return True
-
-
-class LoginException(Exception):
-    def __init__(self, comment: str, alert_level: str):
-        self.comment = comment
-        self.alert_level = alert_level
-
-    def __str__(self) -> str:
-        return f'''{self.comment.__name__}:{self.comment},
-        {self.alert_level.__name__}:{self.alert_level}'''
