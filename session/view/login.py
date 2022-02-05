@@ -35,6 +35,7 @@ def login_required(func):
 
 @login.route('/', methods=['GET'])
 def show_login():
+    raise AttributeError
     if g.session:
         return redirect(url_for('home.show_home'))
     return render_template('account/login.html', title='Login')

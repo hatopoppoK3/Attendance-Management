@@ -1,6 +1,7 @@
 from datetime import timedelta
 
-from flask import Flask
+from flask import Flask, render_template
+from werkzeug.exceptions import NotFound, BadRequest, InternalServerError
 
 from config import SECRET_KEY, SESSION_LIFETIME
 from session.session import session
@@ -11,6 +12,15 @@ app.register_blueprint(session)
 app.register_blueprint(home)
 app.secret_key = SECRET_KEY
 app.permanent_session_lifetime = timedelta(seconds=SESSION_LIFETIME)
+
+
+@app.errorhandler(Exception)
+def show_error(error):
+    if not(isinstance(error, NotFound) or isinstance(error, BadRequest)):
+        error = InternalServerError
+        error.name = error.__name__
+    return render_template('error.html',
+                           title=error.name, statusCode=error.code)
 
 
 if __name__ == '__main__':

@@ -13,7 +13,7 @@ class User(object):
     TABLE_NAME : Datastore Name.
 
     username : str
-        ユーザ名(Key値)
+        ユーザ名(Key値).半角英数字定義.
     userdata : dict
         passhash : str
             passwordから得られるハッシュ値.
@@ -76,7 +76,7 @@ class User(object):
         Parameters
         ----------
         password : str
-            リクエストされるパスワード.
+            リクエストされるパスワード.半角英数字.
         password_confirm : str
             確認入力のパスワード.
 
