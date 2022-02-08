@@ -7,12 +7,12 @@ verify_ssl = true
 flake8 = "*"
 autopep8 = "*"
 importlib-metadata = "==1.7.0"
+isort = "*"
 
 [packages]
 google-cloud-core = "*"
 flask = "*"
 google-cloud-datastore = "*"
-isort = "*"
 google-cloud-logging = "*"
 
 [requires]
