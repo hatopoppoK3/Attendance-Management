@@ -37,7 +37,7 @@ def login_required(func):
 def show_login():
     if g.session:
         return redirect(url_for('home.show_home'))
-    return render_template('account/login.html', title='Login')
+    return render_template('session/login.html', title='Login')
 
 
 @login.route('/', methods=['POST'])

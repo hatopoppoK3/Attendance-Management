@@ -10,7 +10,7 @@ unregister = Blueprint('unregister', __name__, url_prefix='/unregister')
 @unregister.route('/', methods=['GET'])
 @login_required
 def show_unregister():
-    return render_template('account/unregister.html', title='Unregister')
+    return render_template('session/unregister.html', title='Unregister')
 
 
 @unregister.route('/', methods=['POST'])

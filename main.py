@@ -1,7 +1,7 @@
 from datetime import timedelta
 
 from flask import Flask, render_template
-from werkzeug.exceptions import NotFound, BadRequest, InternalServerError
+from werkzeug.exceptions import BadRequest, InternalServerError, NotFound
 
 from config import SECRET_KEY, SESSION_LIFETIME
 from session.session import session

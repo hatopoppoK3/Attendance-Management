@@ -15,8 +15,8 @@
 
 {% with flashMessages = get_flashed_messages(with_categories=true) %}
 {% if flashMessages %}
-{% for category, flashMessage in flashMessages %}
-{% if category == 'info' %}
+{% for level, flashMessage in flashMessages %}
+{% if level == 'info' %}
 <div class="my-4 alert alert-primary d-flex align-items-center" role="alert">
     <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Info:">
         <use xlink:href="#info-fill" />
@@ -25,7 +25,7 @@
         {{ flashMessage }}
     </div>
 </div>
-{% elif category == 'alert' %}
+{% elif level == 'alert' %}
 <div class="my-4 alert alert-danger d-flex align-items-center" role="alert">
     <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:">
         <use xlink:href="#exclamation-triangle-fill" />
@@ -34,7 +34,7 @@
         {{ flashMessage }}
     </div>
 </div>
-{% elif category == 'success' %}
+{% elif level == 'success' %}
 <div class="my-4 alert alert-success d-flex align-items-center" role="alert">
     <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:">
         <use xlink:href="#check-circle-fill" />
@@ -43,7 +43,7 @@
         {{ flashMessage }}
     </div>
 </div>
-{% elif category == 'warning' %}
+{% elif level == 'warning' %}
 <div class="my-4 alert alert-warning d-flex align-items-center" role="alert">
     <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Warning:">
         <use xlink:href="#exclamation-triangle-fill" />

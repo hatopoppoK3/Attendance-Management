@@ -10,7 +10,7 @@ register = Blueprint('register', __name__, url_prefix='/register')
 def show_register():
     if g.session:
         return redirect(url_for('home.show_home'))
-    return render_template('account/register.html', title='Register')
+    return render_template('session/register.html', title='Register')
 
 
 @register.route('/', methods=['POST'])

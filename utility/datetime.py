@@ -14,6 +14,31 @@ def get_nowdatetime() -> datetime.datetime:
     return datetime.datetime.now(tz=jst_timezone)
 
 
+def convert_datetime_tostring(target_datetime: datetime.datetime,
+                              date_only=False) -> str:
+    """datetime型をstr型に変換する.
+    date_only=Trueの場合はYYYY/mm/dd.
+    date_only=False(default)の場合はYYYY/mm/dd/HH/MM/SS/ffffff.
+
+    Parameters
+    ----------
+    target_datetime : datetime.datetime
+        変換対象のdatetime.
+    date_only : bool, optional
+        日付のみの場合はTrue, by default False
+
+    Returns
+    -------
+    str
+        YYYY/mm/dd/HH/MM/SS/FFFFFF.
+    """
+    target_datetime = target_datetime.astimezone(
+        datetime.timezone(datetime.timedelta(hours=9)))
+    if date_only:
+        return target_datetime.strftime('%Y/%m/%d/')
+    return target_datetime.strftime('%Y/%m/%d/%H/%M/%S/%f')
+
+
 def get_subdatetime(time1: datetime.datetime,
                     time2: datetime.datetime) -> int:
     """time1-time2の結果を秒単位で取得する.

@@ -13,6 +13,7 @@ google-cloud-core = "*"
 flask = "*"
 google-cloud-datastore = "*"
 isort = "*"
+google-cloud-logging = "*"
 
 [requires]
 python_version = "3.7"
