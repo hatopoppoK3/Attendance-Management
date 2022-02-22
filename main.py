@@ -12,6 +12,8 @@ app.register_blueprint(session)
 app.register_blueprint(home)
 app.secret_key = SECRET_KEY
 app.permanent_session_lifetime = timedelta(seconds=SESSION_LIFETIME)
+app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
+app.config['SESSION_COOKIE_SECURE'] = True
 
 
 @app.errorhandler(Exception)
