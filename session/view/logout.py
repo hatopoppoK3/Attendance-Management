@@ -1,7 +1,7 @@
-from flask import Blueprint, flash, g, redirect, session, url_for
+from flask import Blueprint, flash, redirect, request, session, url_for
 
 from models.user import User
-from session.view.login import login_required
+from utility.session import auth_session, login_required
 
 logout = Blueprint('logout', __name__, url_prefix='/logout')
 
@@ -9,8 +9,8 @@ logout = Blueprint('logout', __name__, url_prefix='/logout')
 @logout.route('/', methods=['POST'])
 @login_required
 def post_logout():
-    user = User(g.user['username'], g.user['userdata'])
-    if user.delete_session():
+    user = User(session['username'])
+    if (auth_session(request.form['sessionID'])) and (user.delete_session()):
         session.clear()
 
         flash('ログアウト', category='info')

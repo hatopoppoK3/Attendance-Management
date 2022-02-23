@@ -11,6 +11,7 @@
                     <a class="btn btn-primary" aria-current="page" href="/home/">ホーム</a>
                 </li>
                 <form class="navbar-nav m-1" action="{{ url_for('session.logout.post_logout') }}" method="POST">
+                    <input type="hidden" name="sessionID" value="{{ g.session_id }}">
                     <button class="btn btn-primary" type="submit">ログアウト</button>
                 </form>
                 <li class="navbar-nav m-1">

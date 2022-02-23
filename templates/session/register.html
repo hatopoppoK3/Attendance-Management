@@ -4,6 +4,7 @@
 {% block body %}
 <form class="py-4" action="{{ url_for('session.register.post_register') }}" method="POST">
     <h3>アカウント作成</h3>
+    <input type="hidden" name="sessionID" value="{{ g.session_id }}">
     <div class="mb-3">
         <label for="usernameForm" class="form-label fs-4">username</label>
         <div id="usernameForm" class="form-text">半角英数字入力</div>

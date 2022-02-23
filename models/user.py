@@ -1,11 +1,8 @@
-import secrets
-
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from config import SESSION_LIFETIME, SESSION_LOG_COUNT
+from config import SESSION_LOG_COUNT
 from utility.datastore import delete_entity, get_entity, update_entity
-from utility.datetime import (convert_datetime_tostring, get_nowdatetime,
-                              get_subdatetime)
+from utility.datetime import convert_datetime_tostring, get_nowdatetime
 from utility.list import rotate_list_element
 
 
@@ -24,12 +21,10 @@ class User(object):
             ログイン日時.
         logout_time : list(datetime)
             ログアウト日時.
-        session_id : str
-            セッションID.
     """
     TABLE_NAME = 'testuser'
 
-    def __init__(self, username: str, userdata=None) -> None:
+    def __init__(self, username: str) -> None:
         """
         userクラス初期化メソッド.
         entityよりuserdata初期化.
@@ -42,32 +37,7 @@ class User(object):
             ユーザデータ.
         """
         self.username = username
-        if userdata is None:
-            self.userdata = get_entity(self.TABLE_NAME, username)
-        else:
-            self.userdata = userdata
-
-    def auth_session(self, session_id: str) -> bool:
-        """sessionIDの有効性を検証する.
-
-        Parameters
-        ----------
-        session_id : str
-            認証を行うセッションID
-
-        Returns
-        -------
-        bool
-            session認証ができればTrue.でなければFalse.
-        """
-        now_datetime = get_nowdatetime()
-        sub_datetime = get_subdatetime(
-            now_datetime, self.userdata['login_time'][-1])
-        if not(self.userdata['session_id'] == session_id) or \
-                not(sub_datetime < SESSION_LIFETIME):
-            return False
-
-        return True
+        self.userdata = get_entity(self.TABLE_NAME, username)
 
     def create_user(self, password: str, password_confirm: str) -> bool:
         """ユーザ新規作成メソッド.
@@ -97,7 +67,6 @@ class User(object):
         self.userdata['create_time'] = now_datetime
         self.userdata['login_time'] = rotate_list_element(now_datetime)
         self.userdata['logout_time'] = []
-        self.userdata['session_id'] = secrets.token_hex(64)
 
         update_entity(self.TABLE_NAME, self.username, self.userdata)
 
@@ -126,7 +95,6 @@ class User(object):
 
         self.userdata['login_time'] = rotate_list_element(
             get_nowdatetime(), self.userdata['login_time'], SESSION_LOG_COUNT)
-        self.userdata['session_id'] = secrets.token_hex(64)
         update_entity(self.TABLE_NAME, self.username, self.userdata)
 
         return True
@@ -153,11 +121,9 @@ class User(object):
         bool
             ログアウトした場合はTrue. でなければFalse.
         """
-        if (self.userdata is None) or \
-                not('session_id' in self.userdata.keys()):
+        if (self.userdata is None):
             return False
 
-        self.userdata['session_id'] = None
         self.userdata['logout_time'] = rotate_list_element(
             get_nowdatetime(), self.userdata['logout_time'], SESSION_LOG_COUNT)
 

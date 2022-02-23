@@ -132,3 +132,4 @@ config.py
 *ico
 *.code-workspace
 deploy.sh
+isort.sh

@@ -2,14 +2,15 @@ import datetime
 
 from flask import Blueprint, redirect, render_template, request, url_for
 
-from session.view.login import login_required
 from utility.datastore import get_entity, update_entity
+from utility.session import create_session, login_required
 
 home = Blueprint('home', __name__, url_prefix='/home')
 
 
 @home.route('/', methods=['GET'])
 @login_required
+@create_session
 def show_home():
     now_time = datetime.datetime.now().strftime('%Y%m%d')
     time_entity = get_entity(now_time[:6], now_time)

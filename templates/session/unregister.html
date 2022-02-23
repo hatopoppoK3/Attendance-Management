@@ -6,8 +6,9 @@
 <form class="alert alert-danger py-4" role="alert" action="{{ url_for('session.unregister.post_unregister') }}"
     method="POST">
     <h4 class="alert-danger">アカウント削除</h4>
-    <h5 class="alert-danger">username : {{ g.user['username'] }}</h5>
+    <h5 class="alert-danger">username : {{ session['username'] }}</h5>
     <hr>
+    <input type="hidden" name="sessionID" value="{{ g.session_id }}">
     <label for="passwordForm" class="form-label fs-5">Password</label>
     <input type="password" name="password" class="form-control" id="passwordForm" pattern="^[0-9A-Za-z]+$" required>
     <hr>
