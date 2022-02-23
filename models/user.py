@@ -1,6 +1,6 @@
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from config import SESSION_LOG_COUNT
+from config import SESSION_LOG_COUNT, USER_TABLE
 from utility.datastore import delete_entity, get_entity, update_entity
 from utility.datetime import convert_datetime_tostring, get_nowdatetime
 from utility.list import rotate_list_element
@@ -22,7 +22,6 @@ class User(object):
         logout_time : list(datetime)
             ログアウト日時.
     """
-    TABLE_NAME = 'testuser'
 
     def __init__(self, username: str) -> None:
         """
@@ -37,7 +36,7 @@ class User(object):
             ユーザデータ.
         """
         self.username = username
-        self.userdata = get_entity(self.TABLE_NAME, username)
+        self.userdata = get_entity(USER_TABLE, username)
 
     def create_user(self, password: str, password_confirm: str) -> bool:
         """ユーザ新規作成メソッド.
@@ -68,7 +67,7 @@ class User(object):
         self.userdata['login_time'] = rotate_list_element(now_datetime)
         self.userdata['logout_time'] = []
 
-        update_entity(self.TABLE_NAME, self.username, self.userdata)
+        update_entity(USER_TABLE, self.username, self.userdata)
 
         return True
 
@@ -95,7 +94,7 @@ class User(object):
 
         self.userdata['login_time'] = rotate_list_element(
             get_nowdatetime(), self.userdata['login_time'], SESSION_LOG_COUNT)
-        update_entity(self.TABLE_NAME, self.username, self.userdata)
+        update_entity(USER_TABLE, self.username, self.userdata)
 
         return True
 
@@ -107,7 +106,7 @@ class User(object):
         if not(check_password_hash(self.userdata['passhash'], input_str)):
             return False
 
-        delete_entity(self.TABLE_NAME, self.username)
+        delete_entity(USER_TABLE, self.username)
 
         return True
 
@@ -127,7 +126,7 @@ class User(object):
         self.userdata['logout_time'] = rotate_list_element(
             get_nowdatetime(), self.userdata['logout_time'], SESSION_LOG_COUNT)
 
-        update_entity(self.TABLE_NAME, self.username, self.userdata)
+        update_entity(USER_TABLE, self.username, self.userdata)
 
         return True
 
