@@ -1,5 +1,9 @@
 import datetime
 
+from utility.logging import setup_logger, output_logging
+
+datetime_logger = setup_logger(__name__)
+
 
 def get_nowdatetime() -> datetime.datetime:
     """
@@ -17,8 +21,8 @@ def get_nowdatetime() -> datetime.datetime:
 def convert_datetime_tostring(target_datetime: datetime.datetime,
                               date_only=False) -> str:
     """datetime型をstr型に変換する.
-    date_only=Trueの場合はYYYY/mm/dd.
-    date_only=False(default)の場合はYYYY/mm/dd/HH/MM/SS/ffffff.
+    date_only=Trueの場合はYYYY-mm-dd.
+    date_only=False(default)の場合はYYYY-mm-dd HH:MM:SS:ffffff.
 
     Parameters
     ----------
@@ -30,13 +34,24 @@ def convert_datetime_tostring(target_datetime: datetime.datetime,
     Returns
     -------
     str
-        YYYY/mm/dd/HH/MM/SS/FFFFFF.
+        YYYY-mm-dd HH:MM:SS:FFFFFF.
+
+    Raises
+    ------
+    TypeError
+        引数エラー.
     """
+    if not(isinstance(target_datetime, datetime.datetime) or
+           isinstance(date_only, bool)):
+        message = 'TypeError at convert_datetime_tostring method'
+        output_logging(datetime_logger, 'alert', message)
+        raise TypeError(message)
+
     target_datetime = target_datetime.astimezone(
         datetime.timezone(datetime.timedelta(hours=9)))
     if date_only:
-        return target_datetime.strftime('%Y/%m/%d/')
-    return target_datetime.strftime('%Y/%m/%d/%H/%M/%S/%f')
+        return target_datetime.strftime('%Y-%m-%d')
+    return target_datetime.strftime('%Y-%m-%d %H:%M:%S:%f')
 
 
 def get_subdatetime(time1: datetime.datetime,

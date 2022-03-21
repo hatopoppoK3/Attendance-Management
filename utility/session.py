@@ -46,12 +46,12 @@ def auth_session(session_id: str) -> bool:
 
     Raises
     ------
-    ValueError
+    TypeError
         引数がstrでない場合
     """
     # 関数引数チェック
-    if not(type(session_id) == str):
-        raise ValueError('入力引数エラー')
+    if not(isinstance(session_id, str)):
+        raise TypeError('入力引数エラー')
 
     if not('session_id' in session.keys()):
         return False

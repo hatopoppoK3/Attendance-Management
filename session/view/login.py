@@ -2,9 +2,11 @@ from flask import (Blueprint, flash, g, redirect, render_template, request,
                    session, url_for)
 
 from models.user import User
+from utility.logging import output_logging, setup_logger
 from utility.session import auth_session, create_session
 
 login = Blueprint('login', __name__, url_prefix='/')
+login_logger = setup_logger(__name__)
 
 
 @login.before_app_request
@@ -27,11 +29,14 @@ def show_login():
 def post_login():
     user = User(request.form['username'])
     if (auth_session(request.form['sessionID'])) and \
-            (user.create_session(request.form['password'])):
+            (user.login_session(request.form['password'])):
         session['username'] = user.username
+
+        output_logging(login_logger, 'nfo', f'{user.username} Login now!')
         flash('ログイン', category='info')
         return redirect(url_for('home.show_home'))
 
     session.clear()
-    flash('ログイン失敗', category='alert')
+    output_logging(login_logger, 'warning', f'Login failed {user.username}')
+    flash('ログイン失敗', category='warning')
     return redirect(url_for('session.login.show_login'))

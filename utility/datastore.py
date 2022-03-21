@@ -5,39 +5,56 @@ Documention
 from google.cloud import datastore
 from google.cloud.datastore import Entity, Query
 
+from utility.logging import setup_logger, output_logging
+
 datastore_client = datastore.Client()
+datastore_logger = setup_logger(__name__)
 
 
 def get_table(kind: str) -> Query:
-    """テーブル取得.
+    """テーブル取得メソッド.
 
     Parameters
     ----------
     kind : str
-        種別.
-
+        取得対象テーブル名.
     Returns
     -------
     Query
         google.cloud.datastore Query
-    """
 
+    Raises
+    ------
+    TypeError
+        引数エラーの場合.
+    """
+    if not(isinstance(kind, str)):
+        message = 'TypeError at get_table method'
+        output_logging(datastore_logger, 'alert', message)
+        raise TypeError(message)
     query = datastore_client.query(kind=kind)
 
     return query.fetch()
 
 
 def update_table(kind: str, data: dict) -> None:
-    """テーブル更新.
+    """テーブル更新メソッド.
 
     Parameters
     ----------
     kind : str
-        種別.
-
+        更新対象テーブル名.
     data : dict
         更新データ.
+    Raises
+    ------
+    TypeError
+        引数エラーの場合.
     """
+    if not(isinstance(kind, str) or isinstance(data, dict)):
+        message = 'TypeError at update_table method'
+        output_logging(datastore_logger, 'alert', message)
+        raise TypeError(message)
 
     entity_list = []
     for id_or_name, value in data.items():
@@ -55,13 +72,22 @@ def update_table(kind: str, data: dict) -> None:
 
 
 def delete_table(kind: str) -> None:
-    """テーブル削除.
+    """テーブル削除メソッド.
 
     Parameters
     ----------
     kind : str
-        種別.
+        削除対象テーブル名.
+
+    Raises
+    ------
+    TypeError
+        引数エラーの場合.
     """
+    if not(isinstance(kind, str)):
+        message = 'TypeError at delete_table method'
+        output_logging(datastore_logger, 'alert', message)
+        raise TypeError(message)
 
     table = get_table(kind)
     key_list = []
@@ -77,39 +103,55 @@ def delete_table(kind: str) -> None:
 
 
 def get_entity(kind: str, id_or_name: str) -> Entity:
-    """エンティティ取得.
+    """エンティティ取得メソッド.
 
     Parameters
     ----------
     kind : str
-        種別.
-
+        取得対象テーブル名.
     id_or_name : str
-        エンティティキー.
+        取得対象エンティティ名.
 
     Returns
     -------
     Entity
         google.cloud.datastore Entity
+
+    Raises
+    ------
+    TypeError
+        引数エラーの場合.
     """
+    if not(isinstance(kind, str) or isinstance(id_or_name, str)):
+        message = 'TypeError at get_entity method'
+        output_logging(datastore_logger, 'alert', message)
+        raise TypeError(message)
 
     return datastore_client.get(datastore_client.key(kind, id_or_name))
 
 
 def update_entity(kind: str, id_or_name: str, data: dict) -> None:
-    """エンティティ更新.
+    """エンティティ更新メソッド.
 
     Parameters
     ----------
     kind : str
-        種別.
-
+        更新対象テーブル名.
     id_or_name : str
-        エンティティキー.
-
+        更新対象エンティティ名.
     data : dict
         更新データ.
+
+    Raises
+    ------
+    TypeError
+        引数エラーの場合.
     """
+    if not(isinstance(kind, str) or
+           isinstance(id_or_name, str) or isinstance(data, dict)):
+        message = 'TypeError at update_entity method'
+        output_logging(datastore_logger, 'alert', message)
+        raise TypeError(message)
 
     entity = datastore.Entity(
         key=datastore_client.key(kind, id_or_name))
@@ -118,16 +160,24 @@ def update_entity(kind: str, id_or_name: str, data: dict) -> None:
 
 
 def delete_entity(kind: str, id_or_name: str) -> None:
-    """エンティティ削除.
+    """エンティティ削除メソッド.
 
     Parameters
     ----------
     kind : str
-        種別.
-
+        削除対象テーブル名.
     id_or_name : str
-        エンティティキー.
+        削除対象エンティティ名.
+
+    Raises
+    ------
+    TypeError
+        引数エラーの場合.
     """
+    if not(isinstance(kind, str) or isinstance(id_or_name, str)):
+        message = 'TypeError at delete_entity method'
+        output_logging(datastore_logger, 'alert', message)
+        raise TypeError(message)
 
     entity = get_entity(kind, id_or_name)
     if entity is None:

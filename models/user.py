@@ -8,7 +8,6 @@ from utility.list import rotate_list_element
 
 class User(object):
     """User Class
-    TABLE_NAME : Datastore Name.
 
     username : str
         ユーザ名(Key値).半角英数字定義.
@@ -71,7 +70,7 @@ class User(object):
 
         return True
 
-    def create_session(self, password: str) -> bool:
+    def login_session(self, password: str) -> bool:
         """ログイン処理.
 
         Parameters
@@ -110,7 +109,7 @@ class User(object):
 
         return True
 
-    def delete_session(self) -> bool:
+    def logout_session(self) -> bool:
         """ログアウト処理.
         セッションIDはNoneにしてDB更新.
         ログアウト日時の更新.
