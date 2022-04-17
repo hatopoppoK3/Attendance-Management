@@ -20,7 +20,7 @@ def show_error(error):
 
     output_logging(application_log, 'alert', f'Application Error {error.name}')
     return render_template('error.html',
-                           title=error.name, statusCode=error.code)
+                           title=error.name, statusCode=error.code), error.code
 
 
 if __name__ == '__main__':

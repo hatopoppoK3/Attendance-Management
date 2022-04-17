@@ -5,7 +5,7 @@ Documention
 from google.cloud import datastore
 from google.cloud.datastore import Entity, Query
 
-from utility.logging import setup_logger, output_logging
+from utility.logging import output_logging, setup_logger
 
 datastore_client = datastore.Client()
 datastore_logger = setup_logger(__name__)

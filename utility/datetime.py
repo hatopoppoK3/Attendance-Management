@@ -1,6 +1,6 @@
 import datetime
 
-from utility.logging import setup_logger, output_logging
+from utility.logging import output_logging, setup_logger
 
 datetime_logger = setup_logger(__name__)
 

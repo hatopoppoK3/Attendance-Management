@@ -1,3 +1,8 @@
+from utility.logging import output_logging, setup_logger
+
+list_logger = setup_logger(__name__)
+
+
 def rotate_list_element(element, target_list=[], length=1) -> list:
     """要素をリストに追加する.
     追加先リストを指定しない場合はelementのみの長さ1のリストを返す.
@@ -26,10 +31,14 @@ def rotate_list_element(element, target_list=[], length=1) -> list:
         lengthが1未満の場合.
     """
     # 入力引数の型が異なる場合は例外発生.
-    if not(type(target_list) == list) or not(type(length) == int):
-        raise TypeError('入力引数の型エラー')
+    if not(isinstance(target_list, list) or isinstance(length, int)):
+        message = 'TypeError at rotate_list_element method'
+        output_logging(list_logger, 'alert', message)
+        raise TypeError(message)
     elif length < 1:
-        raise ValueError('リスト長エラー')
+        message = 'ValueError at rotate_list_element method. length < 1.'
+        output_logging(list_logger, 'alert', message)
+        raise ValueError(message)
 
     target_list.append(element)
     # lengthの長さ以下になるように古い要素から捨てる.

@@ -32,7 +32,7 @@ def post_login():
             (user.login_session(request.form['password'])):
         session['username'] = user.username
 
-        output_logging(login_logger, 'nfo', f'{user.username} Login now!')
+        output_logging(login_logger, 'info', f'{user.username} Login now!')
         flash('ログイン', category='info')
         return redirect(url_for('home.show_home'))
 
