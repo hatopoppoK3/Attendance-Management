@@ -133,3 +133,4 @@ config.py
 *.code-workspace
 deploy.sh
 isort.sh
+Pipfile.lock
