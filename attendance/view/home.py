@@ -30,7 +30,7 @@ def show_home():
             end_time = datetime.datetime.strftime(
                 time_entity['endTime'], '%H:%M:%S')
 
-    return render_template('index.html', title='home',
+    return render_template('attendance/home.html', title='home',
                            startTime=start_time, endTime=end_time)
 
 
@@ -45,4 +45,4 @@ def record_time():
         submit_time, '%Y/%m/%d/%H:%M:%S')
     update_entity(now_time_str[:6], now_time_str, time_entity)
 
-    return redirect(url_for('home.show_home'))
+    return redirect(url_for('attendance.home.show_home'))

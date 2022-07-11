@@ -28,7 +28,7 @@ def post_register():
         output_logging(register_logger,
                        'success', f'{user.username} create now!')
         flash('アカウント作成', category='success')
-        return redirect(url_for('home.show_home'))
+        return redirect(url_for('attendance.home.show_home'))
 
     output_logging(register_logger,
                    'warning', f'account create failed {user.username}')

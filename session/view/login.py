@@ -21,7 +21,7 @@ def load_logged_in_user():
 @create_session
 def show_login():
     if g.session:
-        return redirect(url_for('home.show_home'))
+        return redirect(url_for('attendance.home.show_home'))
     return render_template('session/login.html', title='Login')
 
 
@@ -34,7 +34,7 @@ def post_login():
 
         output_logging(login_logger, 'info', f'{user.username} Login now!')
         flash('ログイン', category='info')
-        return redirect(url_for('home.show_home'))
+        return redirect(url_for('attendance.home.show_home'))
 
     session.clear()
     output_logging(login_logger, 'warning', f'Login failed {user.username}')

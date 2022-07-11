@@ -8,7 +8,7 @@
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 {% if g.session %}
                 <li class="navbar-nav m-1">
-                    <a class="btn btn-primary" aria-current="page" href="/home/">ホーム</a>
+                    <a class="btn btn-primary" aria-current="page" href="{{ url_for('attendance.home.show_home') }}">ホーム</a>
                 </li>
                 <form class="navbar-nav m-1" action="{{ url_for('session.logout.post_logout') }}" method="POST">
                     <input type="hidden" name="sessionID" value="{{ g.session_id }}">

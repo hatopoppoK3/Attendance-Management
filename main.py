@@ -1,13 +1,13 @@
 from flask import Flask, render_template
 from werkzeug.exceptions import BadRequest, InternalServerError, NotFound
 
+from attendance.attendance import attendance
 from session.session import session
 from utility.logging import output_logging, setup_logger
-from view.home import home
 
 app = Flask(__name__)
+app.register_blueprint(attendance)
 app.register_blueprint(session)
-app.register_blueprint(home)
 app.config.from_pyfile('config.py', silent=True)
 application_log = setup_logger(__name__)
 
