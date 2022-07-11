@@ -5,13 +5,14 @@
 
 <form class="py-4" action="{{ url_for('session.login.post_login') }}" method="POST">
     <h3>Login Form</h3>
+    <input type="hidden" name="sessionID" value="{{ g.session_id }}">
     <div class="mb-3">
         <label for="usernameForm" class="form-label fs-4">username</label>
         <input type="text" name="username" class="form-control" id="usernameForm" pattern="^[0-9A-Za-z]+$" required>
     </div>
     <div class="mb-3">
         <label for="passwordForm" class="form-label fs-4">Password</label>
-        <input type="password" name="password" class="form-control" id="passwordForm" required>
+        <input type="password" name="password" class="form-control" id="passwordForm" pattern="^[0-9A-Za-z]+$" required>
     </div>
     <button type="submit" class="btn btn-primary">Login</button>
 </form>

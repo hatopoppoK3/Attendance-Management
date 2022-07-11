@@ -6,19 +6,23 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                {% if g.session %}
                 <li class="navbar-nav m-1">
-                    <a class="btn btn-primary" aria-current="page" href="/home/">Home</a>
+                    <a class="btn btn-primary" aria-current="page" href="{{ url_for('attendance.home.show_home') }}">ホーム</a>
                 </li>
-                {% if g.user %}
                 <form class="navbar-nav m-1" action="{{ url_for('session.logout.post_logout') }}" method="POST">
-                    <button class="btn btn-primary" type="submit">Logout</button>
+                    <input type="hidden" name="sessionID" value="{{ g.session_id }}">
+                    <button class="btn btn-primary" type="submit">ログアウト</button>
                 </form>
                 <li class="navbar-nav m-1">
-                    <a class="btn btn-danger" href="{{ url_for('session.unregister.show_unregister') }}">Unregister</a>
+                    <a class="btn btn-danger" href="{{ url_for('session.unregister.show_unregister') }}">アカウント削除</a>
                 </li>
                 {% else %}
                 <li class="navbar-nav m-1">
-                    <a class="btn btn-primary" href="{{ url_for('session.register.show_register') }}">Register</a>
+                    <a class="btn btn-primary" aria-current="page" href="/">ログイン</a>
+                </li>
+                <li class="navbar-nav m-1">
+                    <a class="btn btn-primary" href="{{ url_for('session.register.show_register') }}">アカウント登録</a>
                 </li>
                 {% endif %}
             </ul>

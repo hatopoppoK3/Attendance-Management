@@ -32,3 +32,15 @@ flaskでアプリケーションを作るときはHTMLと埋め込み変数の�
    * クラス名 : Kebab case
    * name : Lower camel case
    * 埋め込み変数 : Lower camel case
+
+## アラートのカテゴリについて
+* info : ログイン等の更新動作が正常に完了した場合
+* success : 新規作成・削除等の動作が正常に完了した場合
+* warning : ログイン情報等に誤りがあり完了しなかった場合
+* alert : 動作が正常終了しなかった場合
+
+## 値のフォーマットについて
+* sessionID : 任意長のの16進数
+* 日付(datetime) : YYYY-mm-dd HH:MM:SS:ffffff
+* 
+

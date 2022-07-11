@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+{% block body %}
+
+<div class="alert alert-danger py-4" role="alert">
+    {% if statusCode == 404 %}
+    <div class="alert alert-danger py-4" role="alert">
+        <h3 class="alert-danger">このページは存在しません</h3>
+        <p>URLをお確かめください</p>
+    </div>
+    {% elif statusCode == 400 %}
+    <div class="alert alert-danger py-4" role="alert">
+        <h3 class="alert-danger">リクエストエラー</h3>
+        <p>しばらくしてからお試しください.<br>
+            <a class="text-decoration-none" href="https://developer.mozilla.org/ja/docs/Web/HTTP/Status/400">400 Bad
+                Request</a>
+        </p>
+    </div>
+    {% elif statusCode == 500 %}
+    <div class="alert alert-danger py-4" role="alert">
+        <h3 class="alert-danger">サーバエラー</h3>
+        <p>ご迷惑おかけして申し訳ありません</p>
+    </div>
+    {% endif %}
+</div>
+
+{% endblock %}
