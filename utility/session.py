@@ -9,7 +9,7 @@ from config import TOKEN_LENGTH
 def login_required(func):
     @functools.wraps(func)
     def wrapper(**kwargs):
-        if g.session:
+        if session.get('username'):
             return func(**kwargs)
 
         return redirect(url_for('session.login.show_login'))

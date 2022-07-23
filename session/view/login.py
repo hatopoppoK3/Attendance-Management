@@ -1,4 +1,4 @@
-from flask import (Blueprint, flash, g, redirect, render_template, request,
+from flask import (Blueprint, flash, redirect, render_template, request,
                    session, url_for)
 
 from models.user import User
@@ -9,18 +9,10 @@ login = Blueprint('login', __name__, url_prefix='/')
 login_logger = setup_logger(__name__)
 
 
-@login.before_app_request
-def load_logged_in_user():
-    if session.get('username'):
-        g.session = True
-    else:
-        g.session = False
-
-
 @login.route('/', methods=['GET'])
 @create_session
 def show_login():
-    if g.session:
+    if session.get('username'):
         return redirect(url_for('attendance.home.show_home'))
     return render_template('session/login.html', title='Login')
 

@@ -134,3 +134,4 @@ config.py
 deploy.sh
 isort.sh
 Pipfile.lock
+tools/

@@ -1,4 +1,4 @@
-from flask import (Blueprint, flash, g, redirect, render_template, request,
+from flask import (Blueprint, flash, redirect, render_template, request,
                    session, url_for)
 
 from models.user import User
@@ -12,7 +12,7 @@ register_logger = setup_logger(__name__)
 @register.route('/', methods=['GET'])
 @create_session
 def show_register():
-    if g.session:
+    if session.get('username'):
         return redirect(url_for('home.show_home'))
     return render_template('session/register.html', title='Register')
 
